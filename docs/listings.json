@@ -1,0 +1,33 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/2020-01-15-a-is-for-ai/index.html",
+      "/posts/2020-02-01-b-is-for-bias/index.html",
+      "/posts/2020-03-01-c-is-for-clustering/index.html",
+      "/posts/2020-04-08-d-is-for-deep-learning/index.html",
+      "/posts/2020-05-03-e-is-for-embeddings/index.html",
+      "/posts/2020-05-20-f-is-for-f1-score/index.html",
+      "/posts/2020-05-30-g-is-for-gradient-descent/index.html",
+      "/posts/2020-07-01-h-is-for-hdbscan/index.html",
+      "/posts/2020-09-27-i-is-for-interpretability/index.html",
+      "/posts/2020-09-27-j-is-for-jaccard/index.html",
+      "/posts/2020-10-05-k-is-for-kfold-cross-validation/index.html",
+      "/posts/2020-10-09-l-is-for-labelling-data/index.html",
+      "/posts/2020-10-10-m-is-for-munging-data/index.html",
+      "/posts/2020-10-18-n-is-for-natural-language-processing/index.html",
+      "/posts/2020-10-23-o-is-for-outlier-detection/index.html",
+      "/posts/2020-10-25-p-is-for-pandas/index.html",
+      "/posts/2020-12-27-q-is-for-q-learning/index.html",
+      "/posts/2020-12-28-r-is-for-reproducibility/index.html",
+      "/posts/2021-01-17-s-is-for-supervised-learning/index.html",
+      "/posts/2021-01-31-t-is-for-transfer-learning/index.html",
+      "/posts/2021-02-01-u-is-for-umap/index.html",
+      "/posts/2021-02-03-v-is-for-visualization/index.html",
+      "/posts/2021-02-04-w-is-for-wasserstein-gans/index.html",
+      "/posts/2021-02-05-y-is-for-you-should-talk-to-your-clients/index.html",
+      "/posts/2021-02-05-x-is-for-xgboost/index.html",
+      "/posts/2021-02-06-z-is-for-zero-to-done/index.html"
+    ]
+  }
+]

@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2021-02-01">
+
+<title>U is for UMAP – ABCs of data science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c1fac2584b48ed01fb6e278e36375074.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../abc_logo.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">ABCs of data science</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/gclen/abcs-of-data-science-quarto"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">U is for UMAP</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">data_science</div>
+    <div class="quarto-category">embedding</div>
+    <div class="quarto-category">dimension_reduction</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">February 1, 2021</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Often in data science we have data with multiple dimensions/features that we want to visualize or <a href="../../posts/2020-05-03-e-is-for-embeddings/index.html">embed</a> for further analysis. UMAP (Uniform Manifold Approximation and Projection) is one method for doing dimension reduction which will help us with visualizations/embeddings. What do I mean by dimensions? You can think of a dimension as a column in a table or a spreadsheet. For example, let’s say we have a survey about people’s movie preferences. Each person was asked to rate a genre of movies on a scale of 0-5. By looking at the table, we can see that Alice and Mallory have similar tastes. Bob and Trent also seem to like the same genres as well. Since there are 5 different columns/movie genres we say that this data has 5 <strong>dimensions</strong>.</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Comedy</th>
+<th>Sci-Fi</th>
+<th>Drama</th>
+<th>Horror</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alice</td>
+<td>5</td>
+<td>2</td>
+<td>4</td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>Bob</td>
+<td>3</td>
+<td>3</td>
+<td>1</td>
+<td>5</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td>Mallory</td>
+<td>4</td>
+<td>2</td>
+<td>4</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>Trent</td>
+<td>3</td>
+<td>3</td>
+<td>2</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>Wendy</td>
+<td>1</td>
+<td>5</td>
+<td>5</td>
+<td>3</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>To get a better understanding of this data we want to visualize it. Unfortunately, unless you live in the <a href="https://www.imdb.com/title/tt0816692/">Interstellar universe</a>, humans can only see in 3 dimensions or less. We want to find a way to represent this data in 2 dimensions where points that are close in the higher dimensional space are close in the lower dimensional space. More concretely, in the new 2D representation, Alice should be close to Mallory and Bob should be close to Trent (because they are similar in the higher dimension). <strong>Dimension reduction</strong> is a general term for any method that represents high-dimensional data into a lower dimensional space. It’s also known as <strong>embedding</strong> your data into a lower dimensional space (and I’ll use the terms interchangeably). The two new dimensions of the embedding are related to the original features but are not just a subset. In our movie example it is not just as simple as saying “Comedy and Horror are the important features”. How you combine the original features into a new representation depends on the method of dimension reduction used.</p>
+<section id="methods-for-dimension-reduction" class="level3">
+<h3 class="anchored" data-anchor-id="methods-for-dimension-reduction">Methods for dimension reduction</h3>
+<p>There are <a href="https://www.youtube.com/watch?v=9iol3Lk6kyU">many methods</a> for doing dimension reduction but here are three popular ones:</p>
+<ul>
+<li>Principal Component Analysis (PCA). This is fast, well understood, and the resulting dimensions are <em>kind of</em> interpretable.</li>
+<li>t-distributed stochastic neighbor embedding (t-SNE). Mostly used for visualization and is used in a wide variety of applications.</li>
+<li>Uniform Manifold Approximation and Projection (UMAP). Developed by <a href="https://twitter.com/leland_mcinnes?lang=en">Leland McInnes</a> and <a href="https://github.com/jc-healy">John Healy</a> (who also made <a href="../../posts/2020-07-01-h-is-for-hdbscan/index.html">HDBSCAN</a> it has been growing in popularity in recent years. It’s faster than t-SNE and arguably preserves the higher dimensional structure better than t-SNE.</li>
+</ul>
+</section>
+<section id="using-umap-for-document-embeddingclustering" class="level3">
+<h3 class="anchored" data-anchor-id="using-umap-for-document-embeddingclustering">Using UMAP for document embedding/clustering</h3>
+<p>I’m intending this blog to give you the overall flavour of how dimension reduction methods like UMAP are used. If you’re interested in using UMAP I recommend reading the wonderful <a href="https://umap-learn.readthedocs.io/en/latest/basic_usage.html">getting started guide</a> in the documentation. There’s a <a href="https://www.youtube.com/watch?v=nq6iPZVUxZU">great video</a> from Leland McInnes giving a higher level intuition of how it works. If you’re brave (or have a background in topological data analysis) you can dig into the <a href="https://arxiv.org/abs/1802.03426">mathematical details</a> of why UMAP works.</p>
+<p>As a more concrete example let’s imagine we want to find groups of related forum posts. We can use the <a href="http://qwone.com/~jason/20Newsgroups/">20 newsgroups dataset</a> which is a collection of newsgroup documents across different topics. This example combines a lot of ideas we’ve seen in previous blog posts. If you want code and further explanations to go along with this example, I recommend reading this [document embedding tutorial][https://umap-learn.readthedocs.io/en/latest/document_embedding.html].</p>
+<p>We want to find groups of related things, which sounds like we’ll need to use a <a href="../../posts/2020-03-01-c-is-for-clustering/index.html">clustering algorithm</a>. The clustering algorithm can’t just use the raw data on its own, so we’ll need to pass in an embedding. You might recall from <a href="../../posts/2020-05-03-e-is-for-embeddings/index.html">“E is for Embeddings”</a> that an embedding requires two things:</p>
+<ol type="1">
+<li>A numeric representation of your data (because we need to do math)</li>
+<li>A distance measure (so we can determine how close/far two points are from one another)</li>
+</ol>
+<p>Let’s start with the numeric representation aspect. Forum posts are mostly text so we’ll need to use natural language processing (NLP) techniques. To represent a forum post, we can just count how often a word from a vocabulary appears in that post. This is known as <strong>count vectorization</strong> and there are a lot more details in <a href="../../posts/2020-10-18-n-is-for-natural-language-processing/index.html">“N is for NLP”</a>. This will give us a word-document matrix that could look something like</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>the</th>
+<th>pizza</th>
+<th>baseball</th>
+<th>…</th>
+<th>CPU</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Post 1</td>
+<td>7</td>
+<td>0</td>
+<td>2</td>
+<td>…</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>Post 2</td>
+<td>15</td>
+<td>0</td>
+<td>0</td>
+<td>…</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>Post 3</td>
+<td>10</td>
+<td>1</td>
+<td>3</td>
+<td>…</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>Each row corresponds to a forum post and each column represents a word in the vocabulary. And the value of each cell in the table is how often that word appeared in a given post. Now we have a numeric representation of our data! Now we just need a way of measuring distance between two posts. For example, it looks like post 1 and post 3 are similar because they are both talking about baseball. The fact that we have a series of counts makes Hellinger distance a good choice. There are more details on Hellinger distance in <a href="../../posts/2020-09-27-j-is-for-jaccard/index.html">“J is for Jaccard Metric”</a>.</p>
+<p>If we calculate the word-document matrix for the 20 newsgroups dataset we get 34880 unique words over 18846 forum posts! This also ignores all words that occur less than 5 times in the whole corpus. Now as you can imagine this is a <strong>sparse matrix</strong> (there are a lot of zeroes) because most forum posts don’t have 35000 unique words in them. This means that all of the points are spread far apart. Density based clustering algorithms like [HDBSCAN](../2020-07-01-h-is-for-hdbscan/index.qmd assume that clusters are groups of points that are close together. We need to use dimension reduction to go from 34880 dimensions to a lower dimensional space.</p>
+<p>In 34880 dimensions, all the points are spread far apart. However, while 2D is useful for visualization, the points can get smushed together and you can lose information which will help you distinguish groups of posts. Fortunately, UMAP lets you embed into an arbitrary number of dimensions such as 10, 25, or 50. I find it is useful to try clustering on data that has been embedded into 10 or 20 dimensions as you data is no longer sparse, but you still can keep a lot of information about the individual data points. Finding which lower dimensional space works best is mostly a matter of trying different values and seeing what works best. I recommend trying different values like 10, 20, 40 (as compared to 10, 11, 12 etc).</p>
+<p>We can also embed the 20 newsgroups data into 2D for visualization and colour the points by the forum topic (e.g.&nbsp;rec.sport.hockey or comp.sys.ibm.pc.hardware). This was done by count vectorizing the data and using Hellinger distance as described.</p>
+<p><img src="20newsgroups_hellinger_counts.png" class="img-fluid"></p>
+<p>This embedding looks pretty good. There are groups that you would expect to be together (e.g.&nbsp;the sports related topics). Additionally, the big clump in the middle has topics that are very related (computer hardware). On this embedding (or one in a slightly higher dimension) we can run a clustering algorithm to find all the related posts without having to use the topic labels.</p>
+</section>
+<section id="summary" class="level3">
+<h3 class="anchored" data-anchor-id="summary">Summary</h3>
+<p>UMAP is a great tool to have in your data science toolbox for dimension reduction. This blog barely scratches the surface of what it can do but here are some highlights</p>
+<ul>
+<li>UMAP works on a wide variety of data types such as images, text, and tabular data. As long as you have a numeric representation of that data and a meaningful distance measure you can embed it with UMAP.</li>
+<li>The canonical implementation of UMAP is in <a href="https://github.com/lmcinnes/umap">Python</a> but there are implementations in other languages such as <a href="https://github.com/tkonopka/umap">R</a>.</li>
+<li>UMAP is actively developed and there are useful features being added all the time. For example, the latest release makes it easier to align embeddings over time which is incredibly powerful.</li>
+<li>You can also combine dimension reduction methods like PCA and UMAP. For very high dimensional data it is a common workflow to apply PCA first and then UMAP on the embedded data.</li>
+</ul>
+</section>
+<section id="other-resources" class="level3">
+<h3 class="anchored" data-anchor-id="other-resources">Other resources</h3>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=OtVR_ZnXLu4&amp;list=PLGVZCDnMOq0pHVE3SB0ecki__VMncQPKo&amp;index=41&amp;t=0s">Embed all the things - John Healy (talk from Pydata Los Angeles 2019)</a></li>
+<li><a href="https://umap-learn.readthedocs.io/en/latest/index.html">UMAP documentation</a></li>
+<li><a href="https://www.youtube.com/watch?v=nq6iPZVUxZU">UMAP Uniform Manifold Approximation and Projection for Dimension Reduction - SciPy 2018</a></li>
+<li><a href="http://lineardigressions.com/episodes/2019/12/22/umap-the-latest-in-dimensionality-reduction-for-clustering">An episode of the podcast Linear Digressions on UMAP</a></li>
+<li><a href="https://towardsdatascience.com/a-one-stop-shop-for-principal-component-analysis-5582fb7e0a9c">A One-Stop Shop for Principal Component Analysis</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
