@@ -1,0 +1,63 @@
+---
+aliases:
+- /blog/a-is-for-ai
+categories:
+- data_science
+- AI
+comments: false
+date: '2020-01-15'
+description: " "
+layout: post
+permalink: /blog/a-is-for-ai
+title: A is for Artificial Intelligence
+toc: false
+
+---
+
+I was recently in San Francisco and throughout the city there are many, many billboards containing slogans like “Mission Critical AI” and “Enterprise AI”. There is no doubt that usage of the phrase “artificial intelligence” or AI has increased dramatically in recent years. This increased usage has made it difficult to tell what “using AI” even means.
+
+### So what is AI?
+
+Many people have differing opinions on how to strictly define AI. When people refer to AI this is generally synonymous with machine learning (ML). Since it’s so hard to come up with a definition, let’s define what AI is not:
+
+* AI is not magic
+* AI is not perfect (more on that in [B is for Bias](../2020-02-01-b-is-for-bias/index.qmd))
+
+It’s hard to come up with a strict definition for AI since the generally agreed upon definition has evolved over time. In the 1980s people called large rule based systems (“expert systems”) AI. These systems required subject matter experts and programmers to define a set of rules. As you can imagine (or remember) this is a very time intensive process and there are lots of edge cases to consider. Nowadays people typically think of deep learning (more on that in D is for Deep Learning) as AI. This requires lots of labeled training data (which often needs to be labeled by experts) but models can learn their own rules about the data.
+
+In both cases the “intelligence” part of AI is a bit of a misnomer. Another term that has been suggested  is [“cognitive automation”](https://twitter.com/fchollet/status/1214392496375025664). We are trying to teach a machine to perform a set of tasks based on our knowledge of the world. This is different from something that is truly intelligent that can reason about the world and learn abstract concepts. This distinction is important and referred to as “general” versus “narrow” AI. 
+
+General AI (also referred to as strong AI) refers to a machine that is “human-like” (think HAL 9000 or Skynet). As you would expect from the name, it can generalize it’s previous knowledge to new problem domains. This means that It can intelligently perform a wide variety of tasks without needing explicit training data. Voice assistants like Alexa, and Siri seem like they can generalize, but as anyone who has used them knows, they definitely have limits. They tend not to understand context in a way that a human would, and questions may need to be rephrased in order to be interpreted correctly. A true general AI doesn’t currently exist and it will probably be a while before it does.
+
+Narrow AI (or weak AI) refers to a machine that is good at specific tasks (e.g. image recognition) but can’t generalize to different domains. For example, you could train a machine learning model to distinguish between cats and dogs but it would not be able to answer the question “Where is the best pizza in Ottawa?”. Narrow AI works by using predefined rules or learning from lots of (probably labelled) data.
+
+### What is AI used for?
+
+AI/ML is widely used in a large variety of industries for a number of tasks. This includes:
+
+* Recommending videos on youtube
+* Detecting if a computer has malware
+* Financial trading
+* Helping doctors make diagnoses
+* Voice assistants like Google Assistant
+
+Many of these tasks are applications of fields such as:
+
+* Computer vision (processing images and audio)
+* Natural Language Processing (NLP)
+* Recommender systems
+
+The fact that AI is a buzzword means that it is applied to many different products (even if they don’t include any ML models). This over usage of the term causes many people to twitch when they hear it (and judge people who do use the term). However, it’s important to keep in mind your audience when you are talking about machine learning. Some audiences may not be familiar with specific technical terms (point them at this blog series ;) ) but have heard the term AI.
+
+### Summary
+
+AI/ML is a rapidly growing field which is being applied to a large variety of domains. It’s hard to separate what is real from the snake oil. I’m hoping this blog series will give you enough background knowledge to think critically when you hear the term AI and know the limitations of AI/ML models. In the next blog I’ll talk about many of these limitations and how they affect people’s everyday lives.
+
+### Other resources
+
+* [Crash Course Artificial Intelligence](https://www.youtube.com/playlist?list=PL8dPuuaLjXtO65LeD2p4_Sb5XQ51par_b)
+* [Hello World](https://www.amazon.ca/Hello-World-Algorithms-Define-Future/dp/039363499X) - [Hannah Fry](https://twitter.com/fryrsquared)
+
+
+
+

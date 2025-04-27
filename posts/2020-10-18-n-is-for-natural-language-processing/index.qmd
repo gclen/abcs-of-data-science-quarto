@@ -1,0 +1,140 @@
+---
+aliases:
+- /blog/n-is-for-natural-language-processing
+categories:
+- data_science
+- nlp
+- text_processing
+comments: false
+date: '2020-10-18'
+description: " "
+layout: post
+permalink: /blog/n-is-for-natural-language-processing
+title: N is for Natural Language Processing (NLP)
+toc: false
+
+---
+
+Natural Language Processing (NLP) is a huge area within data science. It’s so huge that this blog will barely scratch the surface and will just give you a flavour of the kinds of things people try to use NLP for. As you might guess, the goal of NLP is to try and gain insights and information from language (either spoken or text). Text data can come from a wide variety of sources such as tweets, news articles, or transcripts of speech-to-text. NLP is used in a lot of applications, including
+
+* Autocorrect
+* Chatbots and virtual assistants (e.g. Siri or Alexa)
+* Language translation (e.g. Google translate)
+* Document summarization
+* Text classification (e.g. is this email spam or not?)
+* Sentiment analysis (e.g. is this movie review positive or negative?)
+* Grouping documents
+
+In recent years, machine learning ([deep learning]((../2020-04-08-d-is-for-deep-learning/index.qmd) in particular) has become increasingly popular within NLP but there are still a number of non-ML based techniques.
+
+### Language models
+
+If you’ve ever tried to learn a new language, you probably know that languages are **hard**. There are lots of weird rules (i.e. grammar) and there are even more exceptions to those rules. Language also changes depending on the context. For example, the language used in academic papers is very different from tweets. So given a **corpus** (the technical term for a bunch of data such as documents) we want to learn how language is used within that set of documents. A document could be a tweet, an academic paper, an email etc. It’s nearly impossible to code all of the grammatical rules ahead of time, so we try to use NLP techniques to model language as it’s used in that corpus. The goal of this is not to relearn grammar, but give a better footing for the task that we really care about (e.g. sentiment analysis).
+
+A common practice in many NLP tasks is to use a **language model** which lets us learn how specific words are used in a corpus. For example, words such as “the” or “and” occur much more frequently than say “lagniappe”. To train a language model, we take a bunch of text and then try to predict the next word. If we have the sentence “I have a golden retriever and she is the best” we want to use the previous words to predict the next word. 
+
+1. Given “I”, predict “have”
+2. Given [“I”, “have”], predict “a”
+3. Given [“I”, “have”, “a”], predict “golden”
+4. Continue until you’ve predicted the number of words in the sentence
+
+We repeat this process and compare how our predictions match the actual text to improve the model. At the end of this we will have a predictive model for how different words are used in practice (e.g. “the” is much more likely than “pizza”). This is obviously a challenging task (and the model will often be wrong). Fortunately we can train models on huge amounts of text (e.g. wikipedia). We don’t even need extra labels since we already know what the next word is in a given sentence! In practice we can use language models that have already been trained so we don’t need to train a new language model on wikipedia for every task.  Language models are typically used as the starting point for other **downstream tasks** such as text classification. In some cases they are used directly in applications like predictive text/autocorrect on your phone. The benefit and downside of language models is that they model how a language is used. This means that if enough people type something incorrectly it’s possible that the model will start suggesting the incorrect version. How a language model performs (which will then affect downstream task performance) is typically dependent on the amount of preprocessing done (more on that later).
+
+### Finding spam emails
+
+Let’s imagine we want to train a model to predict if an email is spam or not spam (ham). This is an example of a **text classification** problem. 
+
+Regular email:
+
+> Hey,<br>
+> 
+> Want to grab lunch today? There’s a new taco truck downtown that looks great :)<br>
+> 
+> -Alice
+
+Spam email:
+
+> Dear valued customer,<br>
+> 
+> Your invoice is attached. In order to see your purchase history click [here](click_me.jpg)<br>
+> 
+> Sincerely,<br>
+> A totally legitimate business<br>
+
+First we need to turn the corpus of emails into a format that our machine learning model can understand (i.e. numbers). This is called **vectorization**. The simplest thing we could do is to count how often each word appears in each document. Unsurprisingly, this is called count vectorization. This gives us a **word-document matrix** where each row corresponds to a document and each column corresponds to a word. The values in the matrix are how often each word occurred in a given document. As an example, let’s say we have the following three short emails (documents):
+
+1. The boss wants the report by Friday.
+2. Pizza half price! This Friday only!
+3. I ordered the pizza for the party.
+
+Our word-document matrix would look something like this (for brevity not all words are included)
+
+| | the | pizza | report | ... | friday |
+|-|-----|-------|--------|-----|--------|
+| Doc 1 | 2 | 0 | 1 | ... | 1 |
+| Doc 2 | 0 | 1 | 0 | ... | 1 |
+| Doc 3 | 2 | 1 | 0 | ... | 0 |
+
+The columns are known as the **vocabulary** since it is the unique set of words occurring in all documents. As you might imagine this matrix could get very big if there is a big vocabulary (and lots of documents). However, the matrix will be **sparse** (mostly filled with zeroes) since most words will not appear in most documents. Fortunately, computer scientists have lots of ways to deal with sparse matrices so this is not a problem in practice.
+ 
+You might notice that the word columns aren’t in the same order as the words in the original documents. We call this a **bag-of-words model** since we throw out all word ordering. Using a bag-of-words model means that we lose some information but it’s much faster computationally and it works surprisingly well in practice. Of course there are some applications (e.g. the language models described above) where order does matter.
+
+Count vectorization is very simple where we just count how often a word appears in a document. But how do we figure out what the words are? What if words are slightly different (e.g. “Pizza” and “pizza”)? 
+
+### Preprocessing
+
+Preprocessing is a catch-all term for anything we do to text before passing it into a model (including vectorization). You can potentially drastically improve the performance of your model by using more sophisticated preprocessing techniques. That being said, it’s often worth trying the simple things first!
+
+##### Tokenization
+
+Tokenization is where we split some text into tokens (e.g. words). Taking a sentence and splitting it into words seems simple enough right? It’s easy enough to split a sentence on spaces and then use the resulting words. There are also more sophisticated tokenization techniques which will split within words (e.g. turning #datascience into “#” and “datascience”). This is also related to **chunking** where you try to find the sentence boundaries in large pieces of text. How you tokenize a sentence also depends on the language. For example, a language like German which has a tendency to make new words by combining a bunch of existing words. You might want to split the new word into its original components.
+
+Related to tokenization is the notion of **n-grams**. These are sequences of tokens which have n elements. For example, if we split the sentence “the dog loves treats” into bigrams (n=2) we would have
+
+```
+[(“the”, “dog”), (“dog”, “loves”), (“loves”, “treats”)]
+```
+
+This lets you capture a little more context around each word. Once we have n-grams we can just do count vectorization like we did above. Instead of columns corresponding to words (unigrams) they will correspond to n-grams. This means that our matrix is not “how often did this word appear in this document” it is “how often did this *sequence* of words appear in this document”. 
+
+It’s worth noting that you don’t need to have traditional language to tokenize. For example you could take file paths “/this/is/a/file/path” and split it into individual files/directories ([“this”, “is”, “a”, “file”, “path”]). Once you have tokens you can apply a wide range of NLP techniques.
+
+##### Lowercasing all tokens
+
+A really common (and easy) preprocessing step is to make everything lowercase. This means that “Friday” and “friday” are not treated as two separate tokens.
+
+##### Stop word removal
+
+Stop words are words that occur very frequently in a given language/corpus. In English these are words such as “the”, “and”, “they” (though there is no definitive list of stopwords). In many cases we want to filter out stop words since they don’t carry much information. This is more useful in tasks like text classification. In other cases such as automated translation you will need to keep stop words.
+
+##### Stemming/lemmatization
+
+Stemming and lemmatization are used to help normalize text. There are many forms of words that all have the same base. For example, “the dog barks/barked/is barking” are all semantically similar. If we are training a model (say a language model) “barks”, “barked”, “barking” will all be treated as separate tokens. To make it easier we would like to normalize all of those tokens to “bark”, giving us the sentence “the dog bark”. Stemming turns a word into its base (e.g. barked to bark),  using language specific rules for removing prefixes or suffixes.  However, there are many edge cases so it’s not 100% effective. This is done Lemmatization is a more sophisticated form of stemming and normalizes words into their true base (e.g. normalizing “was” to “be”). Again, this is based on language specific rules (and a bunch of lookup tables).
+
+##### Minimum term/document frequency
+
+If we keep every word that shows up in any of our documents our vocabulary size will be enormous. In order to reduce the vocabulary size, one common trick is to only keep words/tokens that only occur more than N times. For example, if there is a document that contains the token “maewpfaefamefaef” it’s pretty unlikely that it’s going to show up frequently. So we can just get rid of this by saying “don’t include words that occur less than 5 times”. Similarly, we can also drop words if they show up in less than N (e.g. 5) documents. For example, if we had a document that was “[Buffalo buffalo Buffalo buffalo buffalo buffalo Buffalo buffalo](https://en.wikipedia.org/wiki/Buffalo_buffalo_Buffalo_buffalo_buffalo_buffalo_Buffalo_buffalo)” the word buffalo occurs more than 5 times. But if that was the only document that buffalo appeared in, we probably want to drop buffalo from our vocabulary.
+
+### Beyond simple counting
+
+If we just count how often words appear in documents, there are going to be words (e.g. “the”) which occur frequently but don’t contain much information. How do we deal with the fact that some words convey more information than others? One way to do this is to weight our counts using “Term Frequency - Inverse Document Frequency” (TF-IDF). The intuition behind TF-IDF is as follows:
+
+* If a word appears frequently in most documents in the corpus it probably doesn’t give much information. So we should give those words less weight since they don’t mean as much.
+* If a word appears frequently in a small number of documents then it probably has more information. For example, the word “inheritance” might appear more often than you would expect in spam emails, but not in most normal emails. We should give these words more weight.
+* If a word doesn’t occur that frequently, then it doesn’t really give useful information. For example, if the word “oxymoron” occurred 10 times in our email corpus it doesn’t really help us distinguish between spam/not spam.
+
+In [TF-IDF vectorization](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html), we do count vectorization as we did before then apply one additional step. This extra step is just multiplying the counts by the weight of each word. Using this weighting will help our model distinguish more easily between spam and not/spam.
+
+### Summary
+
+This was just a brief introduction to some of the concepts used in NLP. There are many things that can make NLP more complicated in practice such as dealing with multiple languages in the same corpus. NLP techniques can be a really powerful toolset to have at your disposal and they don’t just apply to traditional text data. If you have data that you can tokenize, then you can apply all of the techniques described above. If you want to dive into some NLP projects I recommend starting with [this course](https://www.fast.ai/2019/07/08/fastai-nlp/) from fast.ai.
+
+### Other resources
+
+* [A Code-First Introduction to Natural Language Processing](https://www.fast.ai/2019/07/08/fastai-nlp/)
+* [Because Internet: Understanding the New Rules of Language](https://gretchenmcculloch.com/book/)
+* [Natural Language Processing: Crash Course AI #7](https://www.youtube.com/watch?v=oi0JXuL19TA&list=PL8dPuuaLjXtO65LeD2p4_Sb5XQ51par_b&t=0s)
+* [Tokenization strategies](https://towardsdatascience.com/tokenization-for-natural-language-processing-a179a891bad4)
+
+
+

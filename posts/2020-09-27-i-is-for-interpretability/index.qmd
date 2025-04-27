@@ -1,0 +1,88 @@
+---
+aliases:
+- /blog/i-is-for-interpretability
+categories:
+- data_science
+- supervised_learning
+- AI
+- bias
+comments: false
+date: '2020-09-27'
+description: " "
+layout: post
+mathjax: true
+permalink: /blog/i-is-for-interpretability
+title: I is for Interpretability
+toc: false
+
+---
+
+Machine learning models are increasingly used to make decisions in everyday life, and as we’ve discussed before, they can be 
+[far from perfect](../2020-02-01-b-is-for-bias/index.qmd). In addition to being able to appeal the decisions made by a model, 
+it is critical to be able to interpret their predictions. Doing this in practice opens up a huge number of questions including
+
+* What does interpretability mean?
+* Why does it matter?
+* How do we actually interpret models in practice?
+
+### Pinning down interpretability
+
+[This paper](https://arxiv.org/pdf/1606.03490.pdf) titled _The Mythos of Model Interpretability_ by [Zachary Lipton](https://twitter.com/zacharylipton), gives a really good overview of what people mean when they say “interpretability”. He argues that interpretability is not just one monolithic concept, but a number of distinct ideas. It’s worth looking at the different reasons we try to interpret ML models.
+
+##### Do we trust the model?
+
+Using a ML model to automate some task often requires a human giving up control.  We often care about the kinds of predictions the model gets wrong and if there is a pattern to these incorrect predictions. For example, many facial recognition models have significantly worse performance on people of color than white people. In this case using the model with this bias would be unacceptable. However, there may be other cases where the model gets things wrong in the same way humans do. In that case it may be acceptable to use the model to make predictions.
+
+##### Can we use the model to learn something about the world?
+
+Researchers will often look at which features of a trained model are most important in making predictions. Imagine you have a model which is trying to predict if a patient has lung cancer. As input features you have the number of years the patient has smoked cigarettes, and the number of years they have chewed bubble gum. Of course, smoking correlates much more with lung cancer than chewing bubble gum and that feature would have a much greater importance. It’s important to keep in mind that correlation does not equal causation. For example, [the per capita consumption of margarine in the US strongly correlates with the divorce rate in Maine(http://www.tylervigen.com/spurious-correlations)]. Researchers can then use these important features to create experiments to test if those correlations are causal. 
+
+##### Will the ML model help a human make better predictions?
+
+A common use of ML models is to help a human make a more informed decision. Imagine you work in cybersecurity and are tasked with finding malware. Fortunately, you have a ML model which determines if files are malware or benign. The important features used by the model (e.g. is the code heavily obfuscated?) can help you make a better decision in your investigation. ML models can also help you find similar examples to give you more context when triaging the file.
+
+### What do interpretable models look like?
+
+There are two broad categories of ways to interpret models: transparency and post-hoc explanations.
+
+##### Transparency
+
+This is basically “how does the model work?”. For example, simpler models such as linear regression are considered more interpretable than a deep neural network (which is sometimes referred to as a blackbox). Let’s imagine we want to train a model to predict house prices. We could have some features about the house such as the number of bedrooms, square footage, distance to a city with more than 500 000 people etc. A linear model is just taking these features and weights and adding them up. 
+
+$$ \text{house price} = w_1 \cdot (\text{number of bedrooms}) + w_2\cdot(\text{square footage}) + w_3\cdot(\text{distance to city}) + ... $$
+
+In these models a higher weight means the feature is more important so interpreting which features are more important is really easy. To say the models are interpretable overall assumes that the features themselves are also easily interpretable (e.g. number of bedrooms).
+
+Other models may not be as easy to interpret directly. For example a random forest uses a bunch of decision trees (think flow charts). While the model may be harder to interpret overall, interpreting an individual decision tree is relatively straightforward. 
+
+Another reason that linear models are typically more interpretable than neural networks/deep learning is that we understand how they work in much more detail. For example, we can prove that a linear model will give a unique solution which is not the case with deep learning models.
+However, neural networks typically perform much better than other models. In order to get comparable performance out of these other models there may be tricks needed (e.g. feature engineering) which could make the model less interpretable overall. 
+
+
+##### Post-hoc interpretability
+
+Even if we don’t directly know how the model works, we can still get useful information by interpreting the predictions. It’s worth noting that this is how humans explain decisions. We don’t always know the exact cause of a decision but can try to provide a rational explanation after the fact. Interpreting the model after the fact means that we can potentially use models with higher performance (e.g. deep learning models). 
+
+One method of post-hoc interpretability is to have an “explanation by example”. This means getting the model to predict which other examples the model thinks are most similar. In the case of predicting malware or not, the examples most similar to a malicious PDF may be other malicious PDF documents. In the case of deep learning models, we can also gain insight by visualizing the [hidden layers]((../2020-04-08-d-is-for-deep-learning/index.qmd).
+
+Another technique that people use is to train two separate models. The first model makes the predictions, and the second model generates text that explains the prediction. For example, the first model may predict something about an image, while the second model generates a caption for that image.
+
+Researchers may also train two separate models where one model is more interpretable than the other. For example they may train a deep neural network (with high performance but low interpretability) as well as a random forest model. While the random forest model may not perform as well, it can also give some insight into the problem space. However, this could be potentially misleading as the explanations given by the simpler model may not correspond to why the more complex model works.
+
+### Things to keep in mind
+
+Interpretability and having explainable models is still a highly active area of research. There are a few things to keep in mind when doing this in practice
+
+* Rules of thumb such as “linear models are more interpretable than neural nets” are generally true (but not always!)
+* When talking about interpretability it is important to clarify what you mean exactly. I highly recommend reading Zachary Lipton’s paper for more specific definitions of the concepts above. 
+* There may be cases where an ML model can perform significantly better than humans. Making sure the model is transparent (and potentially reducing performance) is not always the correct decision depending on the overall goal. It might be sufficient to have a better performing model with a human appeals process in place.
+* I recommend using existing libraries such as [interpret-ml](https://github.com/interpretml/interpret) which have a wide variety of methods and examples when trying to do this in practice. 
+
+
+### Other resources
+
+* [Zachary Lipton’s paper](https://arxiv.org/pdf/1606.03490.pdf)
+* [interpret-ml package](https://github.com/interpretml/interpret)
+* [Practical data ethics course from fast.ai](https://ethics.fast.ai/)
+* [Podcast on using Shapley values to interpret models](http://lineardigressions.com/episodes/2018/5/13/shap-shapley-values-in-machine-learning)
+

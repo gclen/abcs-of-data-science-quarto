@@ -1,0 +1,82 @@
+---
+aliases:
+- /blog/h-is-for-hdbscan
+categories:
+- data_science
+- clustering
+- unsupervised_learning
+comments: false
+date: '2020-07-01'
+description: " "
+layout: post
+permalink: /blog/h-is-for-hdbscan
+title: H is for HDBSCAN
+toc: false
+
+---
+
+There are many data science problems where you don’t have labelled data and need to use [clustering](../2020-03-01-c-is-for-clustering/index.qmd) to find related points. For these clustering problems, HDBSCAN is a great algorithm. It was originally created by [Campello et al.](https://link.springer.com/chapter/10.1007/978-3-642-37456-2_14) and there is a [fast Python implementation](https://github.com/scikit-learn-contrib/hdbscan) written by [Leland Mcinnes](https://twitter.com/leland_mcinnes?lang=en) and [John Healy](https://github.com/jc-healy). When I refer to HDBSCAN I’ll be talking about the python implementation/package. It is generally the first clustering method I try for a variety of reasons:
+
+1. You don’t need to specify the number of clusters. Other clustering methods such as k-means require that you specify the number of clusters to find in your data, and this is hard to know ahead of time. HDBSCAN will find the natural number of clusters in your data. All you need to specify is the minimum number of points that a cluster should have (which is much easier to have an intuition for).
+2. Many other clustering algorithms make assumptions about the shape of the clusters (e.g. they must fit in a circle) or they are all the same density. In real data this is generally not true and HDBSCAN finds clusters with varying shapes/densities.
+3. HDBSCAN will label points as noise/outliers. Many clustering algorithms force every point into a cluster. However, real world data is messy and having outliers improves the quality of the clusters (since they aren’t polluted by noise).
+4. It generally *just works*. I find I spend much less time fiddling with parameters and spend more time looking at my actual data.
+
+Much of this blog is based on examples in the wonderful [documentation for HDBSCAN](https://hdbscan.readthedocs.io/en/latest/). In particular, if you want to see how HDBSCAN compares to other clustering algorithms read [this page](https://hdbscan.readthedocs.io/en/latest/comparing_clustering_algorithms.html).
+
+### Let's look at an example
+
+The first thing we need is an [embedding](../2020-05-03-e-is-for-embeddings/index.qmd), which as you might recall is just a numeric representation of your data with a way to measure distance between points.
+Shown below is a plot of a [sample dataset](https://github.com/scikit-learn-contrib/hdbscan/blob/master/notebooks/clusterable_data.npy). While it is an artificial dataset, it has many properties of real data:
+
+1. There are a lot of noisy/outlying points which don’t belong in any cluster
+2. The groups of points are different shapes and you can see in some clusters that the points are much closer together, while in others they are less dense. 
+
+![](sample_data.png)
+
+Let’s try clustering this data. First we import HDBSCAN and load our data
+
+```python
+import hdbscan
+import numpy as np
+
+data = np.load('clusterable_data.npy')
+```
+
+Clustering the data is as simple as
+
+```python
+clusterer = hdbscan.HDBSCAN(min_cluster_size=15, metric='euclidean')
+clusterer.fit_predict(data)
+```
+
+Here we are saying that there must be *at least* 15 points close together before we say that something is a cluster. How do we measure “close together”? We also specified a Euclidean distance metric. This is the default metric but HDBSCAN can use many [other metrics](https://hdbscan.readthedocs.io/en/latest/basic_hdbscan.html#what-about-different-metrics). Euclidean is the default metric, but it is always better to explicitly state your distance measure for other people reading the code. If we wanted to use cosine distance instead of Euclidean (despite Euclidean being the better choice in this case) we could do
+
+```python
+clusterer = hdbscan.HDBSCAN(min_cluster_size=15, metric='cosine')
+clusterer.fit_predict(data)
+```
+
+We can see which cluster each point belongs to using
+
+```python
+labels = clusterer.labels_
+print(labels)
+# [ 5  5  5 ... -1 -1  5]
+```
+
+The first points shown are part of cluster 5. Points that are outliers are given a label of “-1” so they are easy to filter out. Let’s remake the plot above but colour the points based on their cluster label. The outlying points (part of the -1 cluster) will be grey.
+
+![](sample_data_clustered.png)
+
+You can see that the resulting clusters are pretty good. More importantly, they match what we would intuitively pick as the clusters if we had to draw lines around the groups of points. 
+
+### Summary
+
+HDBSCAN and its python implementation is a fast clustering algorithm that is easy to use. It naturally handles a lot of the messiness of real world data and lets you spend more time focussing on the problem you are trying to solve. If you want to learn more about how HDBSCAN works and see other examples check out the resources below.
+
+### Other resources
+
+* [Blog on understanding HDBSCAN](https://towardsdatascience.com/understanding-hdbscan-and-density-based-clustering-121dbee1320e) which is similar to this blog but goes into much more detail
+* [How HDBSCAN works](https://hdbscan.readthedocs.io/en/latest/how_hdbscan_works.html) from the official documentation
+* [HDBSCAN, Fast Density Based Clustering, the How and the Why](https://dev.tube/video/dGsxd67IFiU) - John Healy

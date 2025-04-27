@@ -1,0 +1,17 @@
+---
+title: "Introduction"
+listing:
+  contents: posts
+  sort: "date asc"
+  type: default
+  categories: true
+  sort-ui: false
+  filter-ui: false
+  page-size: 50
+page-layout: full
+title-block-banner: false
+---
+
+ABCs of data science is intended for anyone who wants to learn more about data science, regardless of skill level. It aims to give readers a high level overview of various data science concepts, so that they can explore these topics further. Note that these blogs were written before the explosion of LLMs but should hopefully provide some intuition into other data science techniques.
+
+

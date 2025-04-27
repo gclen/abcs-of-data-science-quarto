@@ -1,0 +1,69 @@
+---
+aliases:
+- /blog/w-is-for-wasserstein-gans
+categories:
+- data_science
+- synthetic_media
+- gans
+- deepfakes
+comments: false
+date: '2021-02-04'
+description: " "
+layout: post
+permalink: /blog/w-is-for-wasserstein-gans
+title: W is for Wasserstein GANs
+toc: false
+
+---
+
+You may have seen or heard of the term “[deepfakes](https://en.wikipedia.org/wiki/Deepfake)” where realistic looking images/videos/audio have been generated to look or sound like a specific person (e.g. a famous politician). Deepfakes is a more colloquial term for the field of **synthetic media** which is the use of AI to generate images/audio/videos. Faking images is not a new phenomenon (e.g. photoshop) but historically faking video has been challenging. 
+One of the main drivers of the recent breakthroughs in synthetic media are the use of Generative adversarial networks (GANs). While there are some concerns about how GANs and related techniques will be used more broadly, there are legitimate purposes for it. For example, [Apple used GANs](https://arxiv.org/abs/1612.07828) to generate images of faces where they knew the direction the person was looking. This makes it easier to get training data that can be used for other models.
+
+
+![Image of a synthetically generated face. Taken from https://commons.wikimedia.org/wiki/File:AI_generated_face.jpg](AI_generated_face.jpg)
+
+### Generative Adversarial Networks
+
+GANs are a technique created by [Ian Goodfellow](https://twitter.com/goodfellow_ian?lang=en) which involves two [neural networks]../2020-04-08-d-is-for-deep-learning/index.qmd pitted against one another. One neural network (called the generator/creator) tries to create realistic looking data (typically starting from random noise). The other network (the discriminator/investigator) is fed a combination of fake and real data and it tries to predict whether the data is real or fake. This is a zero-sum game, so any gains made by the generator are lost by the discriminator. As training goes on, both models will get better at their tasks and the generated data will be more realistic. To steal an analogy from this [great episode of Linear Digressions](http://lineardigressions.com/episodes/2019/6/30/deepfakes) it’s like one person is trying to counterfeit money and the other person needs to determine counterfeit from the real money. Below is a high level view of the architecture of a GAN. Initially the generated data is pretty clearly fake
+
+![](gan_arch_initial_training.png)
+
+After training the generated data will become much more realistic
+
+![](gan_arch_final_training.png)
+
+In a standard GAN, the discriminator outputs a **probability** that the input is real or fake (i.e. some number between 0 and 1). The loss function is typically based on the [Jensen-Shannon divergence](https://en.wikipedia.org/wiki/Jensen%E2%80%93Shannon_divergence) (JS divergence) which is a way of measuring the similarity of two probability distributions. The generator wants to minimize this loss (i.e. the real and fake distributions should look the same), while the discriminator wants to maximize it. It’s worth noting that after training you have both a model that can generate realistic data as well as a model that can distinguish between real and fake data.
+
+### Wasserstein GANs
+
+Standard GANs can be hard to train in practice. This is because you need to find some stable equilibrium for both the generator and discriminator. [Wasserstein GANs](https://arxiv.org/abs/1701.07875) (also known as WGANs) make a few modifications to the standard GAN which make it better in practice. 
+
+* Instead of using JS divergence, they use Wasserstein distance (also known as earth-mover distance) to measure the similarity of the two probability distributions. This has some nice theoretical justifications (i.e. the math works out).
+* They call the discriminator a “critic”. Instead of having to output a probability (which is restricted to a number between 0 and 1), WGANs don’t have this constraint. This means that there can be bigger differences between the losses, leading to better training.
+* The critic is updated more often than the generator (e.g. 5x more)
+
+There are a few other implementation details but these are the bigger ones. Overall they are easier to train and more stable, producing better results. WGANs are just useful for generating images. They’re used to generate text and other kinds of data such as realistic looking [domain names](https://arxiv.org/abs/1911.06285).
+
+### StyleGAN
+
+[StyleGAN](https://arxiv.org/abs/1812.04948) is another GAN extension which was developed by Nvidia. It’s not directly related to WGANs but has produced impressive looking images of faces. I’m not going to go into how they work here, but there is a [good overview](https://towardsdatascience.com/generating-with-style-the-mechanics-behind-nvidias-highly-realistic-gan-images-b6937237e3c6) written by Cody Wild.
+
+![](stylegan_results.png)
+
+### Summary
+
+GANs are being used in a wide variety of applications including making art, music, and generating training data for other ML models. GANs and synthetic media can definitely seem scary and there are societal implications to consider in addition to the technical ones. This is a very active field with research into generating more realistic media as well as detecting if an image is fake or not. Tools to detect synthetic media will become increasingly important but education can play a large part in making the public more critical in the images/videos they see. While generated outputs are always improving, there are subtle signs to look for to tell if an image is fake or not. This includes things like asymmetry (e.g. someone wearing one earring), noise in the background, or other oddities. [Here](https://kcimc.medium.com/how-to-recognize-fake-ai-generated-images-4d1f6f9a2842) is a good article detailing the things to look for when trying to tell if an image is fake.
+
+### Other resources
+
+* [How to Implement Wasserstein Loss for Generative Adversarial Networks](https://machinelearningmastery.com/how-to-implement-wasserstein-loss-for-generative-adversarial-networks/)
+* [Wasserstein GAN paper](https://arxiv.org/abs/1701.07875)
+* [Episode of Linear Digressions on GANs](http://lineardigressions.com/episodes/2016/5/28/neural-nets-play-cops-and-robbers-aka-generative-adversarial-networks)
+* [Episode of Linear Digressions on deepfakes](http://lineardigressions.com/episodes/2019/6/30/deepfakes)
+
+
+
+
+
+
+

@@ -1,0 +1,93 @@
+---
+aliases:
+- /blog/m-is-for-munging-data
+categories:
+- data_science
+- data_cleaning
+comments: false
+date: '2020-10-10'
+description: " "
+layout: post
+permalink: /blog/m-is-for-munging-data
+title: M is for Munging Data
+toc: false
+
+---
+
+You might think that data scientists spend most of their time training machine learning models. In fact most of the time (60%-80%) spent on a data science project is acquiring and preparing the data. In the case of supervised learning problems this also includes [getting labels](../2020-10-09-l-is-for-labelling-data/index.qmd). This process of preparing data is often referred to as data munging or data wrangling. Data wrangling typically includes a number of tasks:
+
+* Getting and cleaning the data
+* Selecting features 
+* Engineering features 
+* Transforming the data
+
+To paraphrase the bodybuilder [Ronnie Coleman](https://www.youtube.com/watch?v=4UlgXIL0-3g) “everybody wants to be a data scientist but don’t nobody want to munge no ugly-ass data!”. While it isn’t the most glamorous part of data science, good data preparation is critical for having models that perform well. Properly cleaned data and good features can give better performance than trying to tweak the model itself.
+
+### Getting data
+
+Datasets can come in a wide variety of formats but there are a few common ways of accessing them:
+
+* Spreadsheets: These are typically excel spreadsheets or CSV (comma separated value) files. These can be easily read in using something like the pandas library in python.
+* Web APIs: Many data sources provide an API for fetching data, and you can interact with these APIs using python’s requests module. If you need to scrape the website itself, the beautifulsoup module is extremely helpful.
+* Databases: Data scientists will often interact with their data in databases using SQL.
+* Unstructured data: All of the formats above provide data in some structured manner. Unfortunately, this is not always possible and you may need to use [regular expressions](https://xkcd.com/208/) and other techniques to parse the data.
+
+### Cleaning and transforming data
+
+When you are first looking at a new dataset it is extremely important that you **look at your data**! A fancier term for looking at your data is Exploratory Data Analysis (EDA). Once you have an environment set up, what does EDA look like in practice?
+
+##### Looking for missing data
+
+Real world data is messy and there can be mistakes or missing data. You might need to infer missing values or drop rows with too much missing data. How you infer missing data depends on the data type and what works best for your problem. For example, if you have a field with missing numbers, you could fill in the missing value with the average or just put 0. You also need to check if there is a pattern to which rows/fields have missing values. If there is a pattern (i.e. it isn’t random) you will need to compensate for that as well.
+
+##### Visualizing data
+
+Data visualization is an invaluable tool when exploring data. Below are some questions that we are typically trying to answer by visualizing data
+
+* What do the feature distributions look like? This could be as simple as answering the question “Do some values occur very frequently?”. This might be answered by making a histogram of your data.
+* Do some features correlate with one another? For example in a census dataset, the neighbourhood someone lives in will typically correlate with household income.
+* Are there big patterns that jump out in the data? It might be hard to see these patterns (e.g. lots of duplicate points) when looking at a spreadsheet, but when plotted are very obvious.
+
+##### Transforming data
+
+It is pretty common to have to tweak your data into a format that a machine learning algorithm expects. Let’s imagine we have a dataset about video games
+
+| Title | Metacritic score (/100) | IGN score (/10) | Genre |
+|-------|--------------|----------|---------|----------|
+| The Legend of Zelda: Breath of the Wild  | 97 | 10 | Action-adventure | 
+| Untitled Goose Game | 81 | 8 | Puzzle |
+| James Bond 007: Nightfire | 80 | 7 | First person shooter |
+
+Here we have two numeric columns (metacritic score and IGN score) but they are on different scales. One goes from 0-100 while the other is from 0-10. Some ML algorithms assume that all of the features are on the same scale, so we would need to **normalize** these features. This could mean converting all the numbers so that they are between 0 and 1 (e.g. 8/10 becomes 0.8).
+
+Many ML algorithms assume that all of your input is numeric. How do we convert the genre field (which is a **categorical value**) to a numeric one? One simple way to do this is known as **one-hot encoding**. This just means representing all categories as a vector where there is a 1 if the category matches and a 0 if it doesn’t. Using our example above we have:
+
+
+| | Action-adventure | Puzzle | First person shooter | 
+|-------|--------------|----------|---------|----------|
+| The Legend of Zelda: Breath of the Wild | 1 | 0 | 0 |
+| Untitled Goose Game | 0 | 1 | 0 |
+| James Bond 007: Nightfire | 0 | 0 | 1 |
+
+So instead of having the genre value of “Puzzle” for Untitled Goose Game, we would have [0, 1, 0]. A one-hot encoding is a very simple version of an [embedding](../2020-05-03-e-is-for-embeddings/index.qmd).
+
+If we have text data there are many techniques that we can use which I’ll talk about in the next blog N is for Natural Language Processing.
+
+##### Common tools for EDA
+
+[Jupyter notebooks](https://jupyter.org/) are a popular environment for doing EDA, since it provides an interactive development environment where you can see output (e.g. plots) inline with your code. The [pandas](https://pandas.pydata.org/) module in python is very commonly used for data munging tasks and has a lot of useful utilities. I’ll talk more about the pandas library in [P is for Pandas](../2020-10-25-p-is-for-pandas/index.qmd).
+
+### Feature selection and engineering
+
+When preparing data for training a model you need to figure out which features in your data will be most relevant for the problem you are trying to solve (e.g. classification). There may be features that would be helpful that don’t exist in the data as it comes in. Creating new features is referred to as feature engineering. Both feature selection and engineering require some expertise in the problem domain. One way to determine useful features if you have labels is to look at the features which are strongly correlated with those labels. Imagine you are trying to predict if a file is malware or benign. If there are attributes of that file that occur frequently when the file is malware and don’t occur when it is benign, that would be a useful feature. In the case of classification, you are looking for features that make it easy to discriminate between the classes. In the case of [clustering](../2020-03-01-c-is-for-clustering/index.qmd) you need to choose features that say “these points are similar if they have X in common”. Feature selection/engineering is more of an art than a science and can involve some trial and error. 
+
+### Summary
+
+Data munging is a crucial part of data science (and you could argue it’s the majority of data science). Properly cleaning and normalizing your data can have huge benefits for the downstream task you are trying to solve. It is challenging and sometimes frustrating (looking at you regular expressions!) task but is necessary to understand your data and train an effective model.
+
+### Other resources
+
+* [More on data preparation](https://machinelearningmastery.com/what-is-data-preparation-in-machine-learning/)
+* [What’s *really* so hard about feature engineering](http://lineardigressions.com/episodes/2019/10/1/whats-really-so-hard-about-feature-engineering) (episode of the Linear Digressions podcast)
+
+

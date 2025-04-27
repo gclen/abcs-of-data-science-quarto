@@ -1,0 +1,79 @@
+---
+aliases:
+- /blog/x-is-for-xgboost
+categories:
+- data_science
+- supervised_learning
+- xgboost
+- ensembles
+comments: false
+date: '2021-02-05'
+description: " "
+layout: post
+permalink: /blog/x-is-for-xgboost
+title: X is for XGBoost
+toc: false
+
+---
+
+[XGBoost](https://xgboost.readthedocs.io/en/latest/) is a software package/algorithm that has been used to train impressive models in recent years (particularly on tabular/structured data). It’s also extremely fast and has wrappers in a wide variety of languages (Python, C++, Ruby, R, etc). For these reasons, as well as the fact that it has been used to win many [Kaggle](https://www.kaggle.com/) competitions it has become very popular in the past few years. XGBoost stands for “Extreme Gradient Boosting”, which despite sounding like something on the side of a pre-workout supplement, is a very useful technique for improving ensembles. In this blog I’ll explain how XGBoost and related methods work and the types of problems that it’s applicable for.
+
+### Ensembling
+
+If you remember from [“S is for Supervised Learning”](../2021-01-17-s-is-for-supervised-learning/index.qmd) an ensemble is a collection of weak learners (such as decision trees). The idea is that each learner on its own is not particularly strong, but in aggregate they will become a stronger learner. There are two main methods to combine the predictions of the weak learners: **averaging** and **boosting**.
+
+##### Averaging methods
+
+In a random forest model, you might have 500 decision trees which are all trained on different subsets of the data as well as different features. Each tree gets a vote based on their prediction and the class with the majority of votes is chosen as the prediction (this is analogous to the [wisdom of the crowds](https://en.wikipedia.org/wiki/Wisdom_of_the_crowd)). Let’s imagine you are trying to predict if something is a [Robot or Not](https://www.theincomparable.com/robot/). If 70% of the trees predict “robot”, and 30% of the trees predict “not a robot” then the overall prediction will be “robot”.  This an example of an **averaging ensemble** because we trained 500 trees independently and then averaged the predictions. 
+
+##### Boosting methods
+
+In **boosting** we train the individual learners sequentially instead of independently. In theory, the 2nd decision tree can learn from the mistakes of the first, the 3rd tree from the 2nd and so on.  At the very least we hope it will make *different* mistakes. [AdaBoost](https://scikit-learn.org/stable/modules/ensemble.html#adaboost) (Adaptive Boosting) is a popular method for boosting and is relatively straightforward to understand. 
+
+Let’s imagine we are trying to predict which players should be drafted by the NBA from draft eligible players. We have three features: the players height, average number of points scored per game in their last two seasons, and their teams winning percentage. AdaBoost typically uses **decision stumps** (as compared to trees) as its weak learner. A decision stump is just a very shallow tree (with only one node and two leaves). This means each stump only looks at one variable (e.g. height) at a time. The decision stump could learn that if a player is taller than 6’6” then they should be drafted (and not drafted if they are shorter than that). Here are the steps of how AdaBoost works:
+
+1. Train a weak classifier (e.g. our decision stump using height as a variable) on all of the data. Each data point is given a weight (initially they are all equal).
+2. Create a decision stump for all variables (height, PPG, average wins). After training check how well each stump performs (did it classify the points correctly?).
+3. For all of the data points which were not classified correctly, increase their weight. For correctly classified samples, decrease their weight. This forces the overall model to focus on points that are hard to classify.
+4. Repeat steps 2 and 3 until you reach the maximum number of iterations (or all points have been correctly classified).
+
+At the end, all of the weak learners get a weighted vote to produce the final prediction.
+
+##### Gradient boosted trees
+
+If we want to train an ensemble of decision trees how should we do it? We can generalize boosting on decision trees to use arbitrary [loss functions](../2021-01-17-s-is-for-supervised-learning/index.qmd). Once we’ve picked a loss function we can use [gradient descent](../2020-05-30-g-is-for-gradient-descent/index.qmd) to optimize it. Using this technique is typically called **Gradient Boosted Decision Trees** or **Gradient Boosted Trees**. 
+
+### When should I use ensembles of decision trees?
+
+Models like Random Forests or Gradient Boosted Trees are a good starting point for many problems. 
+
+* They can be used for both classification and regression
+* They work on a wide variety of datasets. In particular, they work well on tabular data (think Excel spreadsheets)
+* Random forests handle missing values and categorical data well
+* They typically handle high dimensional data (large numbers of features) well
+* You can typically [interpret](../2020-09-27-i-is-for-interpretability/index.qmd) the predictions made by these models
+
+### Summary
+
+XGBoost is a library which implements gradient boosting and is extremely fast. It’s available in a wide variety of languages and frameworks. For Python you can [install it](https://xgboost.readthedocs.io/en/latest/build.html) using
+
+```
+pip install xgboost
+```
+
+Even if you don’t use XGBoost, I recommend starting with decision tree based models as a starting point for most ML problems. You can often get further with some other models but they typically require more hyperparameter optimization and deep understanding of your data.
+
+### Other resources
+
+* [Episode of Linear Digressions on Ensembles](http://lineardigressions.com/episodes/2017/1/22/ensemble-algorithms)
+* [Scikit-learn documentation on ensemble methods](https://scikit-learn.org/stable/modules/ensemble.html)
+* [XGBoost documentation](https://xgboost.readthedocs.io/en/latest/index.html)
+* [Introduction to boosted trees from XGBoosts documentation](https://xgboost.readthedocs.io/en/latest/tutorials/model.html)
+* [A Gentle Introduction to XGBoost for Applied Machine Learning](https://machinelearningmastery.com/gentle-introduction-xgboost-applied-machine-learning/)
+
+
+
+
+
+
+
