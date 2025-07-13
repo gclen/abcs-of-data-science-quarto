@@ -183,7 +183,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="jaccard-similaritydistance">Jaccard similarity/distance</h3>
 <p>As a more concrete example let’s imagine that we have collected a list of people’s favourite pizza toppings and we want to find which people are most similar.</p>
 <ul>
-<li>Kara likes pepperoni, mushrooms, and green pepper</li>
+<li>Kara likes pepperoni, mushrooms, and green peppers</li>
 <li>Zach likes ham, pineapple, and jalapeno peppers</li>
 <li>Rodney also likes pepperoni, mushrooms, and green peppers</li>
 <li>Sophie likes olives, ham, pepperoni, and mushrooms</li>
@@ -192,7 +192,7 @@ window.Quarto = {
 <ul>
 <li>Kara and Rodney like exactly the same toppings so their similarity is 1</li>
 <li>Rodney and Zach have nothing in common so their similarity is 0</li>
-<li>Kara and Sophie have some things in common but Sophie enjoys more toppings. Their similarity is 0.4 ([pepperoni, mushrooms]/[pepperoni, mushrooms, olives, ham])</li>
+<li>Kara and Sophie have some things in common but Sophie enjoys more toppings. Their similarity is 0.4 ([pepperoni, mushrooms]/[pepperoni, mushrooms, olives, ham, green peppers])</li>
 </ul>
 <p>You’ll notice that two sets that are exactly the same have a similarity of 1. To change this into a distance we just to</p>
 <p><span class="math display">\[ D_{Jaccard} = 1 - similarity \]</span></p>

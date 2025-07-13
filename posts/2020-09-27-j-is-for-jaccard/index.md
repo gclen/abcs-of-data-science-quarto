@@ -24,7 +24,7 @@ In [previous blogs](../2020-05-03-e-is-for-embeddings/index.qmd) we’ve talked 
 
 As a more concrete example let’s imagine that we have collected a list of people’s favourite pizza toppings and we want to find which people are most similar. 
 
-* Kara likes pepperoni, mushrooms, and green pepper
+* Kara likes pepperoni, mushrooms, and green peppers
 * Zach likes ham, pineapple, and jalapeno peppers
 * Rodney also likes pepperoni, mushrooms, and green peppers
 * Sophie likes olives, ham, pepperoni, and mushrooms
@@ -33,7 +33,7 @@ As a more concrete example let’s imagine that we have collected a list of peop
 
 * Kara and Rodney like exactly the same toppings so their similarity is 1
 * Rodney and Zach have nothing in common so their similarity is 0
-* Kara and Sophie have some things in common but Sophie enjoys more toppings. Their similarity is 0.4 ([pepperoni, mushrooms]/[pepperoni, mushrooms, olives, ham])
+* Kara and Sophie have some things in common but Sophie enjoys more toppings. Their similarity is 0.4 ([pepperoni, mushrooms]/[pepperoni, mushrooms, olives, ham, green peppers])
 
 You’ll notice that two sets that are exactly the same have a similarity of 1. To change this into a distance we just to
 
