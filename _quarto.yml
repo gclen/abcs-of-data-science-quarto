@@ -1,22 +1,49 @@
 project:
-  type: website
-  output-dir: docs
+  type: book
 
-website:
-  title: "ABCs of data science"
-  favicon: favicon.ico
-  navbar:
-    logo: abc_logo.png
-    right:
-      - about.qmd
-      - icon: github
-        href: https://github.com/gclen/abcs-of-data-science-quarto 
+book:
+  title: "ABCs of Data Science"
+  author: "Graham Clendenning"
+  date: "3/8/2026"
+  chapters:
+    - index.qmd
+    - chapters/a-is-for-ai/index.qmd
+    - chapters/b-is-for-bias/index.qmd
+    - chapters/c-is-for-clustering/index.qmd
+    - chapters/d-is-for-deep-learning/index.qmd
+    - chapters/e-is-for-embeddings/index.qmd
+    - chapters/f-is-for-f1-score/index.qmd
+    - chapters/g-is-for-gradient-descent/index.qmd
+    - chapters/h-is-for-hdbscan/index.qmd
+    - chapters/i-is-for-interpretability/index.qmd
+    - chapters/j-is-for-jaccard/index.qmd
+    - chapters/k-is-for-kfold-cross-validation/index.qmd
+    - chapters/l-is-for-labelling-data/index.qmd
+    - chapters/m-is-for-munging-data/index.qmd
+    - chapters/n-is-for-natural-language-processing/index.qmd
+    - chapters/o-is-for-outlier-detection/index.qmd
+    - chapters/p-is-for-pandas/index.qmd
+    - chapters/q-is-for-q-learning/index.qmd
+    - chapters/r-is-for-reproducibility/index.qmd
+    - chapters/s-is-for-supervised-learning/index.qmd
+    - chapters/t-is-for-transfer-learning/index.qmd
+    - chapters/u-is-for-umap/index.qmd
+    - chapters/v-is-for-visualization/index.qmd
+    - chapters/w-is-for-wasserstein-gans/index.qmd
+    - chapters/x-is-for-xgboost/index.qmd
+    - chapters/y-is-for-you-should-talk-to-your-clients/index.qmd
+    - chapters/z-is-for-zero-to-done/index.qmd
+
 format:
   html:
     theme:
       - cosmo
       - brand
-    css: styles.css
-
+  pdf:
+    documentclass: scrreprt
+    toc-depth: 1
+    header-includes: |
+      \titlehead{\includegraphics[width=6in]{logo.png}}
+number-depth: 1
 
 
