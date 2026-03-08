@@ -44,7 +44,7 @@ format:
     documentclass: scrreprt
     toc-depth: 1
     header-includes: |
-      \titlehead{\includegraphics[width=6in]{logo.png}}
+      \titlehead{\includegraphics[width=6in]{abc_logo.png}}
 number-depth: 1
 
 
